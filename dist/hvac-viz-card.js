@@ -469,13 +469,13 @@ class HvacVizCard extends HTMLElement {
   }
 }
 
-customElements.define('hvac-viz-card', HvacVizCard);
-
-// Register for HACS / Lovelace card picker
-window.customCards = window.customCards || [];
-window.customCards.push({
-  type:        'hvac-viz-card',
-  name:        'HVAC Viz',
-  description: 'Animated airflow schematic for heat-recovery ventilation units',
-  preview:     true,
-});
+if (!customElements.get('hvac-viz-card')) {
+  customElements.define('hvac-viz-card', HvacVizCard);
+  window.customCards = window.customCards || [];
+  window.customCards.push({
+    type:        'hvac-viz-card',
+    name:        'HVAC Viz',
+    description: 'Animated airflow schematic for heat-recovery ventilation units',
+    preview:     true,
+  });
+}
