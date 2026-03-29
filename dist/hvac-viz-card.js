@@ -56,13 +56,14 @@ class HvacVizCard extends HTMLElement {
     if (this._built) this._update();
   }
 
-  getCardSize() { return 3; }
+  getCardSize() { return 4; }
 
-  // Tells the Sections layout to default to full width (4 columns)
+  // Tells the Sections layout to default to full width and enforce minimum
   getLayoutOptions() {
     return {
       grid_columns: 4,
-      grid_rows: 3,
+      grid_min_columns: 4,
+      grid_rows: 4,
     };
   }
 
@@ -132,12 +133,12 @@ class HvacVizCard extends HTMLElement {
   }
 
   /* Header */
-  .hdr { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; }
-  .title { font-size:15px; font-weight:500; }
-  .sub { font-size:11px; color:var(--secondary-text-color,#888); font-family:monospace; margin-top:2px; }
+  .hdr { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+  .title { font-size:20px; font-weight:500; }
+  .sub { font-size:14px; color:var(--secondary-text-color,#888); font-family:monospace; margin-top:3px; }
   .badge {
     display: inline-flex; align-items: center; gap: 5px;
-    font-size: 11px; padding: 4px 10px; border-radius: 8px;
+    font-size: 14px; padding: 5px 12px; border-radius: 8px;
     background: #e1f5ee; color: #0f6e56;
   }
   .badge.offline { background: #fce8e8; color: #a33; }
@@ -155,30 +156,30 @@ class HvacVizCard extends HTMLElement {
     .mets { grid-template-columns: repeat(4, 1fr); }
     .ctls { grid-template-columns: 2fr 1fr; }
   }
-  .met { background:var(--secondary-background-color,#f5f4f0); border-radius:8px; padding:10px 12px; }
-  .ml { font-size:10px; color:var(--secondary-text-color,#888); margin-bottom:2px; letter-spacing:.05em; }
-  .mv { font-size:19px; font-weight:500; font-family:monospace; line-height:1.1; }
-  .mu { font-size:10px; color:var(--secondary-text-color,#888); margin-top:2px; }
+  .met { background:var(--secondary-background-color,#f5f4f0); border-radius:8px; padding:12px 14px; }
+  .ml { font-size:13px; color:var(--secondary-text-color,#888); margin-bottom:4px; letter-spacing:.05em; }
+  .mv { font-size:28px; font-weight:500; font-family:monospace; line-height:1.1; }
+  .mu { font-size:13px; color:var(--secondary-text-color,#888); margin-top:3px; }
 
   /* Controls */
   .ctls { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .ctl { background:var(--secondary-background-color,#f5f4f0); border-radius:8px; padding:10px 12px; }
-  .cl { font-size:10px; color:var(--secondary-text-color,#888); margin-bottom:6px; letter-spacing:.05em; }
+  .ctl { background:var(--secondary-background-color,#f5f4f0); border-radius:8px; padding:12px 14px; }
+  .cl { font-size:13px; color:var(--secondary-text-color,#888); margin-bottom:8px; letter-spacing:.05em; }
   .fan { display:flex; gap:4px; }
   .fb {
-    flex:1; padding:6px 2px;
+    flex:1; padding:8px 2px;
     border:.5px solid var(--divider-color,#ccc); border-radius:6px;
     background:transparent; cursor:pointer;
-    font-family:monospace; font-size:13px;
+    font-family:monospace; font-size:17px;
     color:var(--secondary-text-color,#888);
   }
   .fb:hover { background:var(--card-background-color,#fff); }
   .fb.on { background:#dbeeff; color:#1a5fa8; border-color:transparent; font-weight:500; }
   select {
-    width:100%; padding:6px 8px;
+    width:100%; padding:8px 10px;
     border:.5px solid var(--divider-color,#ccc); border-radius:6px;
     background:var(--card-background-color,#fff);
-    font-size:13px; color:var(--primary-text-color,#111);
+    font-size:16px; color:var(--primary-text-color,#111);
     font-family:inherit;
   }
 
@@ -190,8 +191,8 @@ class HvacVizCard extends HTMLElement {
   .sv-le { stroke:#BA7517; stroke-width:1.5; fill:none; }
   .sv-as { fill:#1D9E75; } .sv-ae { fill:#BA7517; }
   .sv-ps { fill:#0F6E56; } .sv-pe { fill:#BA7517; }
-  .sv-tmp { font-size:12px; font-family:monospace; fill:var(--primary-text-color,#111); }
-  .sv-pl { font-size:9px; fill:var(--secondary-text-color,#888); letter-spacing:.07em; }
+  .sv-tmp { font-family:monospace; fill:var(--primary-text-color,#111); }
+  .sv-pl { fill:var(--secondary-text-color,#888); letter-spacing:.07em; }
 
   /* Bypass arc */
   .bp-off { fill:none; stroke:var(--divider-color,#ccc); stroke-width:1.2; stroke-dasharray:5,4; }
@@ -249,7 +250,7 @@ class HvacVizCard extends HTMLElement {
         <line x1="86" y1="63" x2="86" y2="75" class="ht-l"/>
       </g>
       <text id="htLbl" x="52" y="60" text-anchor="middle"
-            style="font-size:8px;letter-spacing:.06em;fill:#aaa;">HEIZUNG</text>
+            font-size="11" style="letter-spacing:.06em;fill:#aaa;">HEIZUNG</text>
 
       <!-- Unit housing -->
       <rect x="120" y="20" width="400" height="158" rx="4" class="sv-unit"/>
@@ -266,7 +267,7 @@ class HvacVizCard extends HTMLElement {
       <!-- Bypass arc (over HX block) -->
       <path id="bpPath" d="M 265,69 C 265,28 375,28 375,69" class="bp-off"/>
       <text id="bpLbl" x="320" y="27" text-anchor="middle"
-            style="font-size:8px;letter-spacing:.06em;fill:var(--divider-color,#bbb);">BYPASS</text>
+            font-size="11" style="letter-spacing:.06em;fill:var(--divider-color,#bbb);">BYPASS</text>
 
       <!-- Flow direction arrows  supply → -->
       <polygon points="187,64 200,69 187,74" class="sv-as"/>
@@ -282,15 +283,15 @@ class HvacVizCard extends HTMLElement {
       <circle cx="120" cy="132" r="4" class="sv-pe"/>
 
       <!-- Temperature readouts (dynamic) -->
-      <text x="630" y="62"  text-anchor="end" class="sv-tmp" id="tZUL">–</text>
-      <text x="10"  y="148"               class="sv-tmp" id="tFOL">–</text>
-      <text x="630" y="148" text-anchor="end" class="sv-tmp" id="tABLv">–</text>
+      <text x="630" y="64"  text-anchor="end" font-size="18" class="sv-tmp" id="tZUL">–</text>
+      <text x="10"  y="150"                   font-size="18" class="sv-tmp" id="tFOL">–</text>
+      <text x="630" y="150" text-anchor="end" font-size="18" class="sv-tmp" id="tABLv">–</text>
 
       <!-- Port labels (AUL and ABL include outdoor/extract temps inline) -->
-      <text x="52"  y="84"  text-anchor="middle"  class="sv-pl" id="tAULlbl">AUL  –</text>
-      <text x="630" y="80"  text-anchor="end"      class="sv-pl">ZUL</text>
-      <text x="10"  y="124"                        class="sv-pl">FOL</text>
-      <text x="630" y="124" text-anchor="end"      class="sv-pl" id="tABLlbl">ABL  –</text>
+      <text x="52"  y="86"  text-anchor="middle"  font-size="13" class="sv-pl" id="tAULlbl">AUL  –</text>
+      <text x="630" y="82"  text-anchor="end"      font-size="13" class="sv-pl">ZUL</text>
+      <text x="10"  y="126"                        font-size="13" class="sv-pl">FOL</text>
+      <text x="630" y="126" text-anchor="end"      font-size="13" class="sv-pl" id="tABLlbl">ABL  –</text>
 
       <!-- Animated airflow particles (SVG animateTransform scales with viewBox) -->
       <g clip-path="url(#${u}-cS)" id="${u}-ptcS">
