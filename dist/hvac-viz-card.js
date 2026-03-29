@@ -98,7 +98,11 @@ class HvacVizCard extends HTMLElement {
   _fanLevelIndex() {
     const v = this._stv('fan_level', '');
     const idx = this._config.fan_level_options.indexOf(v);
-    return idx;        // −1 if not found / unavailable
+    if (idx >= 0) return idx;
+    // Fallback: if state is a plain integer, use it directly as index
+    const n = parseInt(v, 10);
+    if (!isNaN(n) && n >= 0 && n < this._config.fan_level_options.length) return n;
+    return -1;
   }
 
   _callSelect(entityKey, option) {
@@ -172,7 +176,7 @@ class HvacVizCard extends HTMLElement {
     color:var(--secondary-text-color,#888);
   }
   .fb:hover { background:var(--card-background-color,#fff); }
-  .fb.on { background:#dbeeff; color:#1a5fa8; border-color:transparent; font-weight:500; }
+  .fb.on { background:#1a5fa8; color:#fff; border-color:transparent; font-weight:700; box-shadow: 0 2px 6px rgba(26,95,168,.35); }
   select {
     width:100%; padding:10px 12px;
     border:.5px solid var(--divider-color,#ccc); border-radius:8px;
@@ -422,8 +426,8 @@ class HvacVizCard extends HTMLElement {
       if (modeEl.value !== modeSt.state) modeEl.value = modeSt.state;
     }
 
-    // ── Bypass
-    const bypass = this._isOn('bypass');
+    // ── Bypass (cover entity: open = bypass active, closed = HX active)
+    const bypass = this._stv('bypass', 'closed') === 'open';
     if ($('mBP')) {
       $('mBP').textContent = bypass ? 'AUF' : 'ZU';
       $('mBP').style.color = bypass ? '#1a5fa8' : '';
