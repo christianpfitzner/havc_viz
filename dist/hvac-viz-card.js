@@ -134,7 +134,6 @@ class HvacVizCard extends HTMLElement {
   /* Header */
   .hdr { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
   .title { font-size:26px; font-weight:500; }
-  .sub { font-size:17px; color:var(--secondary-text-color,#888); font-family:monospace; margin-top:4px; }
   .badge {
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 17px; padding: 6px 16px; border-radius: 10px;
@@ -149,10 +148,10 @@ class HvacVizCard extends HTMLElement {
     border-radius: 10px; margin-bottom: 12px; overflow: hidden;
   }
 
-  /* Metrics 2×2 → 4×1 on wide cards */
+  /* Metrics: 2 cols narrow → 3 cols wide */
   .mets { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:16px; }
   @container (min-width: 480px) {
-    .mets { grid-template-columns: repeat(4, 1fr); }
+    .mets { grid-template-columns: repeat(3, 1fr); }
     .ctls { grid-template-columns: 2fr 1fr; }
   }
   .met { background:var(--secondary-background-color,#f5f4f0); border-radius:10px; padding:16px 18px; }
@@ -212,7 +211,6 @@ class HvacVizCard extends HTMLElement {
   <div class="hdr">
     <div>
       <div class="title">${this._config.title || 'HVAC'}</div>
-      <div class="sub" id="sub">${this._config.host ? this._config.host + ' · Modbus TCP' : ''}</div>
     </div>
     <span class="badge" id="badge">
       <span class="bdot"></span>
@@ -321,14 +319,9 @@ class HvacVizCard extends HTMLElement {
       <div class="mu" id="mHTsub">–</div>
     </div>
     <div class="met">
-      <div class="ml">Volumenstrom</div>
-      <div class="mv" id="mFlow">–</div>
-      <div class="mu" id="mFlowUnit">m³/h</div>
-    </div>
-    <div class="met">
-      <div class="ml">Filterstatus</div>
+      <div class="ml">Filterwechsel</div>
       <div class="mv" id="mFilt">–</div>
-      <div class="mu" id="mFiltSub"></div>
+      <div class="mu" id="mFiltSub">Tage verbleibend</div>
     </div>
   </div>
 
@@ -429,19 +422,6 @@ class HvacVizCard extends HTMLElement {
       if (modeEl.value !== modeSt.state) modeEl.value = modeSt.state;
     }
 
-    // ── Flow
-    const flowSt = this._st('flow');
-    if ($('mFlow')) {
-      if (flowSt && !['unavailable','unknown'].includes(flowSt.state)) {
-        const n = parseFloat(flowSt.state);
-        $('mFlow').textContent = isNaN(n) ? flowSt.state : Math.round(n);
-        const unit = flowSt.attributes?.unit_of_measurement ?? 'm³/h';
-        if ($('mFlowUnit')) $('mFlowUnit').textContent = unit;
-      } else {
-        $('mFlow').textContent = '–';
-      }
-    }
-
     // ── Bypass
     const bypass = this._isOn('bypass');
     if ($('mBP')) {
@@ -470,14 +450,18 @@ class HvacVizCard extends HTMLElement {
     const htLbl = $('htLbl');
     if (htLbl) htLbl.style.fill = heater ? '#BA7517' : '#aaa';
 
-    // ── Filter
-    const filterDirty = this._isOn('filter');
+    // ── Filter — days remaining from sensor/calendar entity
+    const filtSt = this._st('filter');
     if ($('mFilt')) {
-      $('mFilt').textContent   = filterDirty ? 'WECHSELN' : 'OK';
-      $('mFilt').style.color   = filterDirty ? '#a33'     : '#0f6e56';
+      if (filtSt && !['unavailable', 'unknown'].includes(filtSt.state)) {
+        const days = Math.round(parseFloat(filtSt.state));
+        $('mFilt').textContent = isNaN(days) ? filtSt.state : days;
+        $('mFilt').style.color = (!isNaN(days) && days <= 14) ? '#a33' : '#0f6e56';
+      } else {
+        $('mFilt').textContent = '–';
+        $('mFilt').style.color = '';
+      }
     }
-    if ($('mFiltSub'))
-      $('mFiltSub').textContent = filterDirty ? 'Filter verschmutzt' : '';
   }
 }
 
