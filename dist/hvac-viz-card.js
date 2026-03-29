@@ -25,7 +25,7 @@ class HvacVizCard extends HTMLElement {
     return {
       title: 'profi-air 130 flat',
       host: '192.168.1.42',
-      fan_level_options: ['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4'],
+      fan_level_options: ['0', '1', '2', '3', '4'],
       entities: {
         fan_level:     'select.profi_air_fan_level',
         mode:          'select.profi_air_operation_mode',
@@ -57,6 +57,14 @@ class HvacVizCard extends HTMLElement {
   }
 
   getCardSize() { return 5; }
+
+
+  getLayoutOptions() {
+  return {
+    grid_columns: 2,   // Standard-Spaltenbreite vorschlagen
+    grid_rows: 3,
+  };
+}
 
   // ── State helpers ─────────────────────────────────────────────────────────
 
