@@ -197,15 +197,7 @@ class HvacVizCard extends HTMLElement {
   .ht-act .ht-r { fill:#FAEEDA; stroke:#BA7517; stroke-width:1.2; }
   .ht-act .ht-l { stroke:#BA7517; }
 
-  /* Particle animations */
-  @keyframes pfr { from { transform:translateX(-20px) } to { transform:translateX(680px) } }
-  @keyframes pfl { from { transform:translateX(660px) } to { transform:translateX(-20px) } }
-  .anim-s { animation: pfr var(--fd,3s) linear infinite; }
-  .anim-e { animation: pfl var(--fd,3s) linear infinite; }
-  .ad2 { animation-delay: calc(var(--fd,3s) * -.25); }
-  .ad3 { animation-delay: calc(var(--fd,3s) * -.5);  }
-  .ad4 { animation-delay: calc(var(--fd,3s) * -.75); }
-  .paused .anim-s, .paused .anim-e { animation-play-state:paused; opacity:0; }
+  /* Particle groups (visibility controlled via JS) */
 </style>
 
 <div class="card">
@@ -294,18 +286,18 @@ class HvacVizCard extends HTMLElement {
       <text x="10"  y="124"                        class="sv-pl">FOL</text>
       <text x="630" y="124" text-anchor="end"      class="sv-pl" id="tABLlbl">ABL  –</text>
 
-      <!-- Animated airflow particles -->
-      <g clip-path="url(#${u}-cS)">
-        <circle cx="0" cy="69" r="3" class="sv-ps anim-s"/>
-        <circle cx="0" cy="69" r="3" class="sv-ps anim-s ad2"/>
-        <circle cx="0" cy="69" r="3" class="sv-ps anim-s ad3"/>
-        <circle cx="0" cy="69" r="3" class="sv-ps anim-s ad4"/>
+      <!-- Animated airflow particles (SVG animateTransform scales with viewBox) -->
+      <g clip-path="url(#${u}-cS)" id="${u}-ptcS">
+        <circle cy="69" r="3" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
+        <circle cy="69" r="3" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-0.75s" repeatCount="indefinite"/></circle>
+        <circle cy="69" r="3" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-1.5s" repeatCount="indefinite"/></circle>
+        <circle cy="69" r="3" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-2.25s" repeatCount="indefinite"/></circle>
       </g>
-      <g clip-path="url(#${u}-cE)">
-        <circle cx="0" cy="132" r="3" class="sv-pe anim-e"/>
-        <circle cx="0" cy="132" r="3" class="sv-pe anim-e ad2"/>
-        <circle cx="0" cy="132" r="3" class="sv-pe anim-e ad3"/>
-        <circle cx="0" cy="132" r="3" class="sv-pe anim-e ad4"/>
+      <g clip-path="url(#${u}-cE)" id="${u}-ptcE">
+        <circle cy="132" r="3" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
+        <circle cy="132" r="3" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-0.75s" repeatCount="indefinite"/></circle>
+        <circle cy="132" r="3" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-1.5s" repeatCount="indefinite"/></circle>
+        <circle cy="132" r="3" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-2.25s" repeatCount="indefinite"/></circle>
       </g>
     </svg>
   </div>
@@ -396,12 +388,21 @@ class HvacVizCard extends HTMLElement {
 
     // ── Fan level → particle speed + button highlight
     const fanIdx = this._fanLevelIndex();
-    const svEl = $('sv');
-    if (svEl) {
-      const fd = (fanIdx >= 0 && fanIdx < FAN_DURATIONS.length)
-        ? FAN_DURATIONS[fanIdx] : 3;
-      svEl.style.setProperty('--fd', fd + 's');
-      fanIdx <= 0 ? svEl.classList.add('paused') : svEl.classList.remove('paused');
+    const ptcS = sr.getElementById(`${this._uid}-ptcS`);
+    const ptcE = sr.getElementById(`${this._uid}-ptcE`);
+    if (fanIdx <= 0) {
+      if (ptcS) ptcS.style.opacity = '0';
+      if (ptcE) ptcE.style.opacity = '0';
+    } else {
+      if (ptcS) ptcS.style.opacity = '';
+      if (ptcE) ptcE.style.opacity = '';
+      const fd = (fanIdx < FAN_DURATIONS.length) ? FAN_DURATIONS[fanIdx] : 3;
+      [ptcS, ptcE].forEach(grp => {
+        if (!grp) return;
+        grp.querySelectorAll('animateTransform').forEach(anim => {
+          anim.setAttribute('dur', fd + 's');
+        });
+      });
     }
     sr.querySelectorAll('.fb').forEach(btn => {
       btn.classList.toggle('on', parseInt(btn.dataset.idx) === fanIdx);
