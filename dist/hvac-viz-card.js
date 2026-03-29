@@ -56,14 +56,13 @@ class HvacVizCard extends HTMLElement {
     if (this._built) this._update();
   }
 
-  getCardSize() { return 4; }
+  getCardSize() { return 5; }
 
-  // Tells the Sections layout to default to full width and enforce minimum
   getLayoutOptions() {
     return {
       grid_columns: 4,
       grid_min_columns: 4,
-      grid_rows: 4,
+      grid_rows: 5,
     };
   }
 
@@ -127,22 +126,22 @@ class HvacVizCard extends HTMLElement {
     container-type: inline-size;
     background: var(--card-background-color, #fff);
     border-radius: 12px;
-    padding: 16px;
+    padding: 24px;
     font-family: var(--paper-font-body1_-_font-family, system-ui, sans-serif);
     color: var(--primary-text-color, #111);
   }
 
   /* Header */
-  .hdr { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
-  .title { font-size:20px; font-weight:500; }
-  .sub { font-size:14px; color:var(--secondary-text-color,#888); font-family:monospace; margin-top:3px; }
+  .hdr { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px; }
+  .title { font-size:26px; font-weight:500; }
+  .sub { font-size:17px; color:var(--secondary-text-color,#888); font-family:monospace; margin-top:4px; }
   .badge {
-    display: inline-flex; align-items: center; gap: 5px;
-    font-size: 14px; padding: 5px 12px; border-radius: 8px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 17px; padding: 6px 16px; border-radius: 10px;
     background: #e1f5ee; color: #0f6e56;
   }
   .badge.offline { background: #fce8e8; color: #a33; }
-  .bdot { width:5px; height:5px; border-radius:50%; background:currentColor; }
+  .bdot { width:7px; height:7px; border-radius:50%; background:currentColor; }
 
   /* Diagram */
   .diag {
@@ -151,35 +150,35 @@ class HvacVizCard extends HTMLElement {
   }
 
   /* Metrics 2×2 → 4×1 on wide cards */
-  .mets { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:12px; }
+  .mets { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:16px; }
   @container (min-width: 480px) {
     .mets { grid-template-columns: repeat(4, 1fr); }
     .ctls { grid-template-columns: 2fr 1fr; }
   }
-  .met { background:var(--secondary-background-color,#f5f4f0); border-radius:8px; padding:12px 14px; }
-  .ml { font-size:13px; color:var(--secondary-text-color,#888); margin-bottom:4px; letter-spacing:.05em; }
-  .mv { font-size:28px; font-weight:500; font-family:monospace; line-height:1.1; }
-  .mu { font-size:13px; color:var(--secondary-text-color,#888); margin-top:3px; }
+  .met { background:var(--secondary-background-color,#f5f4f0); border-radius:10px; padding:16px 18px; }
+  .ml { font-size:16px; color:var(--secondary-text-color,#888); margin-bottom:6px; letter-spacing:.05em; }
+  .mv { font-size:36px; font-weight:500; font-family:monospace; line-height:1.1; }
+  .mu { font-size:16px; color:var(--secondary-text-color,#888); margin-top:4px; }
 
   /* Controls */
-  .ctls { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .ctl { background:var(--secondary-background-color,#f5f4f0); border-radius:8px; padding:12px 14px; }
-  .cl { font-size:13px; color:var(--secondary-text-color,#888); margin-bottom:8px; letter-spacing:.05em; }
-  .fan { display:flex; gap:4px; }
+  .ctls { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .ctl { background:var(--secondary-background-color,#f5f4f0); border-radius:10px; padding:16px 18px; }
+  .cl { font-size:16px; color:var(--secondary-text-color,#888); margin-bottom:10px; letter-spacing:.05em; }
+  .fan { display:flex; gap:6px; }
   .fb {
-    flex:1; padding:8px 2px;
-    border:.5px solid var(--divider-color,#ccc); border-radius:6px;
+    flex:1; padding:10px 2px;
+    border:.5px solid var(--divider-color,#ccc); border-radius:8px;
     background:transparent; cursor:pointer;
-    font-family:monospace; font-size:17px;
+    font-family:monospace; font-size:22px;
     color:var(--secondary-text-color,#888);
   }
   .fb:hover { background:var(--card-background-color,#fff); }
   .fb.on { background:#dbeeff; color:#1a5fa8; border-color:transparent; font-weight:500; }
   select {
-    width:100%; padding:8px 10px;
-    border:.5px solid var(--divider-color,#ccc); border-radius:6px;
+    width:100%; padding:10px 12px;
+    border:.5px solid var(--divider-color,#ccc); border-radius:8px;
     background:var(--card-background-color,#fff);
-    font-size:16px; color:var(--primary-text-color,#111);
+    font-size:20px; color:var(--primary-text-color,#111);
     font-family:inherit;
   }
 
@@ -250,7 +249,7 @@ class HvacVizCard extends HTMLElement {
         <line x1="86" y1="63" x2="86" y2="75" class="ht-l"/>
       </g>
       <text id="htLbl" x="52" y="60" text-anchor="middle"
-            font-size="11" style="letter-spacing:.06em;fill:#aaa;">HEIZUNG</text>
+            font-size="14" style="letter-spacing:.06em;fill:#aaa;">HEIZUNG</text>
 
       <!-- Unit housing -->
       <rect x="120" y="20" width="400" height="158" rx="4" class="sv-unit"/>
@@ -267,7 +266,7 @@ class HvacVizCard extends HTMLElement {
       <!-- Bypass arc (over HX block) -->
       <path id="bpPath" d="M 265,69 C 265,28 375,28 375,69" class="bp-off"/>
       <text id="bpLbl" x="320" y="27" text-anchor="middle"
-            font-size="11" style="letter-spacing:.06em;fill:var(--divider-color,#bbb);">BYPASS</text>
+            font-size="14" style="letter-spacing:.06em;fill:var(--divider-color,#bbb);">BYPASS</text>
 
       <!-- Flow direction arrows  supply → -->
       <polygon points="187,64 200,69 187,74" class="sv-as"/>
@@ -283,28 +282,28 @@ class HvacVizCard extends HTMLElement {
       <circle cx="120" cy="132" r="4" class="sv-pe"/>
 
       <!-- Temperature readouts (dynamic) -->
-      <text x="630" y="64"  text-anchor="end" font-size="18" class="sv-tmp" id="tZUL">–</text>
-      <text x="10"  y="150"                   font-size="18" class="sv-tmp" id="tFOL">–</text>
-      <text x="630" y="150" text-anchor="end" font-size="18" class="sv-tmp" id="tABLv">–</text>
+      <text x="630" y="66"  text-anchor="end" font-size="24" class="sv-tmp" id="tZUL">–</text>
+      <text x="10"  y="152"                   font-size="24" class="sv-tmp" id="tFOL">–</text>
+      <text x="630" y="152" text-anchor="end" font-size="24" class="sv-tmp" id="tABLv">–</text>
 
       <!-- Port labels (AUL and ABL include outdoor/extract temps inline) -->
-      <text x="52"  y="86"  text-anchor="middle"  font-size="13" class="sv-pl" id="tAULlbl">AUL  –</text>
-      <text x="630" y="82"  text-anchor="end"      font-size="13" class="sv-pl">ZUL</text>
-      <text x="10"  y="126"                        font-size="13" class="sv-pl">FOL</text>
-      <text x="630" y="126" text-anchor="end"      font-size="13" class="sv-pl" id="tABLlbl">ABL  –</text>
+      <text x="52"  y="88"  text-anchor="middle"  font-size="16" class="sv-pl" id="tAULlbl">AUL  –</text>
+      <text x="630" y="84"  text-anchor="end"      font-size="16" class="sv-pl">ZUL</text>
+      <text x="10"  y="128"                        font-size="16" class="sv-pl">FOL</text>
+      <text x="630" y="128" text-anchor="end"      font-size="16" class="sv-pl" id="tABLlbl">ABL  –</text>
 
       <!-- Animated airflow particles (SVG animateTransform scales with viewBox) -->
       <g clip-path="url(#${u}-cS)" id="${u}-ptcS">
-        <circle cy="69" r="3" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
-        <circle cy="69" r="3" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-0.75s" repeatCount="indefinite"/></circle>
-        <circle cy="69" r="3" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-1.5s" repeatCount="indefinite"/></circle>
-        <circle cy="69" r="3" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-2.25s" repeatCount="indefinite"/></circle>
+        <circle cy="69" r="5" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
+        <circle cy="69" r="5" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-0.75s" repeatCount="indefinite"/></circle>
+        <circle cy="69" r="5" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-1.5s" repeatCount="indefinite"/></circle>
+        <circle cy="69" r="5" class="sv-ps"><animateTransform attributeName="transform" type="translate" from="-20 0" to="680 0" dur="3s" begin="-2.25s" repeatCount="indefinite"/></circle>
       </g>
       <g clip-path="url(#${u}-cE)" id="${u}-ptcE">
-        <circle cy="132" r="3" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
-        <circle cy="132" r="3" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-0.75s" repeatCount="indefinite"/></circle>
-        <circle cy="132" r="3" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-1.5s" repeatCount="indefinite"/></circle>
-        <circle cy="132" r="3" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-2.25s" repeatCount="indefinite"/></circle>
+        <circle cy="132" r="5" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="0s" repeatCount="indefinite"/></circle>
+        <circle cy="132" r="5" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-0.75s" repeatCount="indefinite"/></circle>
+        <circle cy="132" r="5" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-1.5s" repeatCount="indefinite"/></circle>
+        <circle cy="132" r="5" class="sv-pe"><animateTransform attributeName="transform" type="translate" from="660 0" to="-20 0" dur="3s" begin="-2.25s" repeatCount="indefinite"/></circle>
       </g>
     </svg>
   </div>
@@ -328,7 +327,7 @@ class HvacVizCard extends HTMLElement {
     </div>
     <div class="met">
       <div class="ml">Filterstatus</div>
-      <div class="mv" id="mFilt" style="font-size:14px;">–</div>
+      <div class="mv" id="mFilt">–</div>
       <div class="mu" id="mFiltSub"></div>
     </div>
   </div>
@@ -397,13 +396,15 @@ class HvacVizCard extends HTMLElement {
     const fanIdx = this._fanLevelIndex();
     const ptcS = sr.getElementById(`${this._uid}-ptcS`);
     const ptcE = sr.getElementById(`${this._uid}-ptcE`);
-    if (fanIdx <= 0) {
+    if (fanIdx === 0) {
+      // Fan explicitly off — hide particles
       if (ptcS) ptcS.style.opacity = '0';
       if (ptcE) ptcE.style.opacity = '0';
     } else {
+      // fanIdx > 0: known speed; fanIdx === -1: unknown/offline → show at default speed
       if (ptcS) ptcS.style.opacity = '';
       if (ptcE) ptcE.style.opacity = '';
-      const fd = (fanIdx < FAN_DURATIONS.length) ? FAN_DURATIONS[fanIdx] : 3;
+      const fd = (fanIdx > 0 && fanIdx < FAN_DURATIONS.length) ? FAN_DURATIONS[fanIdx] : 3;
       [ptcS, ptcE].forEach(grp => {
         if (!grp) return;
         grp.querySelectorAll('animateTransform').forEach(anim => {
