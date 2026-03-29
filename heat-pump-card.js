@@ -508,12 +508,13 @@ class HeatPumpCard extends HTMLElement {
   }
 }
 
-customElements.define('heat-pump-card', HeatPumpCard);
-
-window.customCards = window.customCards || [];
-window.customCards.push({
-  type:        'heat-pump-card',
-  name:        'Heat Pump Card',
-  description: 'Refrigeration cycle schematic for heat pumps (Buderus, Viessmann, Nibe, …)',
-  preview:     true,
-});
+if (!customElements.get('heat-pump-card')) {
+  customElements.define('heat-pump-card', HeatPumpCard);
+  window.customCards = window.customCards || [];
+  window.customCards.push({
+    type:        'heat-pump-card',
+    name:        'Heat Pump Card',
+    description: 'Refrigeration cycle schematic for heat pumps (Buderus, Viessmann, Nibe, …)',
+    preview:     true,
+  });
+}

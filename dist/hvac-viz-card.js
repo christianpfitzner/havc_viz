@@ -24,19 +24,17 @@ class HvacVizCard extends HTMLElement {
   static getStubConfig() {
     return {
       title: 'profi-air 130 flat',
-      host: '192.168.1.42',
       fan_level_options: ['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4'],
       entities: {
         fan_level:     'select.profi_air_fan_level',
         mode:          'select.profi_air_operation_mode',
-        bypass:        'binary_sensor.profi_air_bypass_damper',
+        bypass:        'cover.profi_air_bypass_damper',
         frost_heater:  'binary_sensor.profi_air_frost_protection',
         temp_supply:   'sensor.profi_air_supply_air_temperature',
         temp_exhaust:  'sensor.profi_air_exhaust_air_temperature',
         temp_outdoor:  'sensor.profi_air_outdoor_air_temperature',
         temp_extract:  'sensor.profi_air_return_air_temperature',
-        flow:          'sensor.profi_air_supply_air_flow',
-        filter:        'binary_sensor.profi_air_filter_change',
+        filter:        'sensor.profi_air_filter_days_remaining',
       },
     };
   }

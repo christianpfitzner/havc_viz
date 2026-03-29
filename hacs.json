@@ -1,5 +1,5 @@
 {
   "name": "HVAC Viz",
   "render_readme": true,
-  "filename": "hvac-viz-card.js"
+  "filename": "dist/hvac-viz-card.js"
 }
