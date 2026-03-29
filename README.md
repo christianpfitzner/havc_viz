@@ -1,33 +1,44 @@
-HVAC Viz
+# HVAC Viz
 
-Lovelace custom card with animated airflow schematic for heat-recovery ventilation (HRV/MVHR) units integrated via the Dantherm integration (Modbus TCP).
-Tested with Fränkische profi-air 130 flat via the Dantherm HACS integration.
+Lovelace custom card with animated airflow schematic for heat-recovery ventilation (HRV/MVHR) units integrated via the [Dantherm integration](https://github.com/Tvalley71/dantherm) (Modbus TCP).
+
+Tested with **Fränkische profi-air 130 flat** via the Dantherm HACS integration.
 Should also work with Pluggit iFlow, Dantherm HCV, Bosch Vent 5000, and other Dantherm-compatible units.
+
 ---
-Features
-Animated supply / extract airflow particles (speed reflects actual fan level)
-Inline pre-heater symbol activates on frost protection
-Bypass arc highlights in summer bypass mode
-Temperature readouts for all four ports (AUL / ZUL / ABL / FOL)
-Live bypass-damper and frost-heater status cards
-Fan level buttons and operation-mode selector with direct service calls
+
+## Features
+
+- Animated supply / extract airflow particles (speed reflects actual fan level)
+- Inline pre-heater symbol activates on frost protection
+- Bypass arc highlights in summer bypass mode
+- Temperature readouts for all four ports (AUL / ZUL / ABL / FOL)
+- Live bypass-damper and frost-heater status cards
+- Fan level buttons and operation-mode selector with direct service calls
+
 ---
-Installation via HACS
-In HACS → Frontend → three-dot menu → Custom repositories
-Add `https://github.com/<your-username>/hvac-viz` → category Lovelace
-Install HVAC Viz
-Add the resource (HACS usually does this automatically):
-```yaml
+
+## Installation via HACS
+
+1. In HACS → **Frontend** → three-dot menu → **Custom repositories**
+2. Add `https://github.com/<your-username>/hvac-viz` → category **Lovelace**
+3. Install **HVAC Viz**
+4. Add the resource (HACS usually does this automatically):
+   ```yaml
    url: /hacsfiles/hvac-viz/hvac-viz-card.js
    type: module
    ```
-Restart Home Assistant (or reload resources)
+5. Restart Home Assistant (or reload resources)
+
 ---
-Manual installation
+
+## Manual installation
+
 ```bash
 # copy to your HA www folder
 cp hvac-viz-card.js config/www/hvac-viz-card.js
 ```
+
 Add to `configuration.yaml`:
 ```yaml
 lovelace:
@@ -35,8 +46,11 @@ lovelace:
     - url: /local/hvac-viz-card.js
       type: module
 ```
+
 ---
-Card configuration
+
+## Card configuration
+
 ```yaml
 type: custom:hvac-viz-card
 title: profi-air 130 flat
@@ -59,23 +73,33 @@ entities:
   flow:          sensor.profi_air_supply_air_flow
   filter:        binary_sensor.profi_air_filter_change
 ```
+
 All `entities` keys are optional — omit any entity your device does not expose.
-Entity mapping table
-Config key	Description	Domain
-`fan_level`	Fan speed level (controls + display)	`select`
-`mode`	Operating mode	`select`
-`bypass`	Bypass damper open/closed	`binary_sensor`
-`frost_heater`	Supply air pre-heater active	`binary_sensor`
-`temp_supply`	Supply air temperature (ZUL)	`sensor`
-`temp_exhaust`	Exhaust air temperature (FOL)	`sensor`
-`temp_outdoor`	Outdoor air temperature (AUL)	`sensor`
-`temp_extract`	Extract air temperature (ABL)	`sensor`
-`flow`	Volumetric flow rate	`sensor`
-`filter`	Filter change required	`binary_sensor`
+
+### Entity mapping table
+
+| Config key    | Description                          | Domain          |
+|---------------|--------------------------------------|-----------------|
+| `fan_level`   | Fan speed level (controls + display) | `select`        |
+| `mode`        | Operating mode                       | `select`        |
+| `bypass`      | Bypass damper open/closed            | `binary_sensor` |
+| `frost_heater`| Supply air pre-heater active         | `binary_sensor` |
+| `temp_supply` | Supply air temperature (ZUL)        | `sensor`        |
+| `temp_exhaust`| Exhaust air temperature (FOL)       | `sensor`        |
+| `temp_outdoor`| Outdoor air temperature (AUL)       | `sensor`        |
+| `temp_extract`| Extract air temperature (ABL)       | `sensor`        |
+| `flow`        | Volumetric flow rate                 | `sensor`        |
+| `filter`      | Filter change required               | `binary_sensor` |
+
 ---
-Finding your entity IDs (Dantherm integration)
-Go to Settings → Devices & Services → Dantherm → your device → Entities.
+
+## Finding your entity IDs (Dantherm integration)
+
+Go to **Settings → Devices & Services → Dantherm → your device → Entities**.
 Entity names vary by device model and firmware. The Dantherm integration page lists all exposed entities.
+
 ---
-License
+
+## License
+
 MIT
