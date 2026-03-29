@@ -25,7 +25,7 @@ class HvacVizCard extends HTMLElement {
     return {
       title: 'profi-air 130 flat',
       host: '192.168.1.42',
-      fan_level_options: ['0', '1', '2', '3', '4'],
+      fan_level_options: ['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4'],
       entities: {
         fan_level:     'select.profi_air_fan_level',
         mode:          'select.profi_air_operation_mode',
@@ -58,13 +58,13 @@ class HvacVizCard extends HTMLElement {
 
   getCardSize() { return 3; }
 
-
+  // Tells the Sections layout to default to full width (4 columns)
   getLayoutOptions() {
-  return {
-    grid_columns: 2,   // Standard-Spaltenbreite vorschlagen
-    grid_rows: 3,
-  };
-}
+    return {
+      grid_columns: 4,
+      grid_rows: 3,
+    };
+  }
 
   // ── State helpers ─────────────────────────────────────────────────────────
 
@@ -118,10 +118,12 @@ class HvacVizCard extends HTMLElement {
 
     this.shadowRoot.innerHTML = `
 <style>
-  :host { display: block; }
+  :host { display: block; width: 100%; }
   * { box-sizing: border-box; }
 
   .card {
+    width: 100%;
+    container-type: inline-size;
     background: var(--card-background-color, #fff);
     border-radius: 12px;
     padding: 16px;
@@ -147,8 +149,12 @@ class HvacVizCard extends HTMLElement {
     border-radius: 10px; margin-bottom: 12px; overflow: hidden;
   }
 
-  /* Metrics 2×2 */
+  /* Metrics 2×2 → 4×1 on wide cards */
   .mets { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:12px; }
+  @container (min-width: 480px) {
+    .mets { grid-template-columns: repeat(4, 1fr); }
+    .ctls { grid-template-columns: 2fr 1fr; }
+  }
   .met { background:var(--secondary-background-color,#f5f4f0); border-radius:8px; padding:10px 12px; }
   .ml { font-size:10px; color:var(--secondary-text-color,#888); margin-bottom:2px; letter-spacing:.05em; }
   .mv { font-size:19px; font-weight:500; font-family:monospace; line-height:1.1; }
