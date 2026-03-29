@@ -1,4 +1,5 @@
 HVAC Viz
+
 Lovelace custom card with animated airflow schematic for heat-recovery ventilation (HRV/MVHR) units integrated via the Dantherm integration (Modbus TCP).
 Tested with Fränkische profi-air 130 flat via the Dantherm HACS integration.
 Should also work with Pluggit iFlow, Dantherm HCV, Bosch Vent 5000, and other Dantherm-compatible units.
