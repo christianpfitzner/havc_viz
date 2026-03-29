@@ -56,7 +56,7 @@ class HvacVizCard extends HTMLElement {
     if (this._built) this._update();
   }
 
-  getCardSize() { return 5; }
+  getCardSize() { return 3; }
 
 
   getLayoutOptions() {
